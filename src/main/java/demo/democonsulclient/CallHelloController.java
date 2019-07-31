@@ -14,18 +14,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class CallHelloController {
 
     @Autowired
     private LoadBalancerClient loadBalancer;
     
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+    
+    @Autowired
+    private ProducerService producerService;
+    
+    @RequestMapping("/useFeign")
+    public String useFeign() {
+    	
+    	return producerService.hello();
+    }
 
     @RequestMapping("/call")
     public String call() {
-        ServiceInstance serviceInstance = loadBalancer.choose("service-consul-producer");
+        ServiceInstance serviceInstance = loadBalancer.choose("demo-consul-producer");
+
         System.out.println("service address： " + serviceInstance.getUri());
         System.out.println("service id： " + serviceInstance.getServiceId());
 
@@ -49,7 +62,7 @@ public class CallHelloController {
         //HttpEntity<CallHelloController> requestEntity = new HttpEntity<>(requestHeaders);
         
     	// load balanced request by using exchange
-    	String response = restTemplate.exchange("http://service-consul-producer/hello", HttpMethod.GET, null, String.class).getBody();
+    	String response = restTemplate.exchange("http://demo-consul-producer/hello", HttpMethod.GET, null, String.class).getBody();
     	
     	// load balanced request by using getForObject
     	//String response = restTemplate.getForObject("http://service-consul-producer/hello", String.class);

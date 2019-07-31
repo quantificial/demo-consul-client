@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<!-- read spring properties file -->
+	<springProperty scope="context" name="logName" source="spring.application.name" defaultValue="localhost"/>
+	<springProperty scope="context" name="portNumber" source="server.port" defaultValue="default"/>
+	
+
+    <!--  define the log home directory -->
+    <property name="LOG_HOME" value="e://logs"/>
+
+    <!-- 
+    <springProperty scope="context" name="LOG_HOME" source="logback.path"/>
+    -->
+ 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--   log format> date, thread, level(occupied 5 spaces) and then logger information -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- rolling -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${logName}_${portNumber}.log</file>
+ 
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--rolling location-->
+            <fileNamePattern>${LOG_HOME}/%d{yyyyMM,aux}//${logName}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>21</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+ 
+ 	<!-- log output level -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+    
+	<!-- 测试环境+开发环境. 多个使用逗号隔开. -->
+	<springProfile name="test,dev">
+	    <logger name="com.dudu.controller" level="info" />
+	</springProfile>
+	<!-- 生产环境. -->
+	<springProfile name="prod">
+	    <logger name="com.dudu.controller" level="ERROR" />
+	</springProfile>
+    
+    <!--sync to database -->
+    <!-- 
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+           <dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource">
+              <driverClass>com.mysql.jdbc.Driver</driverClass>
+              <url>jdbc:mysql://127.0.0.1:3306/databaseName</url>
+              <user>root</user>
+              <password>root</password>
+            </dataSource>
+        </connectionSource>
+ 	</appender> 
+    -->
+  
+</configuration>

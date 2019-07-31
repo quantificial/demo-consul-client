@@ -17,11 +17,11 @@ public class ServiceController {
 
     @RequestMapping("/services")
     public Object services() {
-        return discoveryClient.getInstances("service-consul-producer");
+        return discoveryClient.getInstances("demo-consul-producer");
     }
 
     @RequestMapping("/discover")
     public Object discover() {
-        return loadBalancer.choose("service-consul-producer").getUri().toString();
+        return loadBalancer.choose("demo-consul-producer").getUri().toString();
     }
 }
