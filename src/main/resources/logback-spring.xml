@@ -26,7 +26,7 @@
  
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--rolling location-->
-            <fileNamePattern>${LOG_HOME}/%d{yyyyMM,aux}//${logName}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/%d{yyyyMM,aux}//${logName}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>21</maxHistory>
             <totalSizeCap>3GB</totalSizeCap>
