@@ -32,6 +32,7 @@ public class CallHelloController {
     @RequestMapping("/useFeign")
     public String useFeign() {
     	
+    	//return producerService.greeting("3");
     	return producerService.hello();
     }
 

@@ -7,7 +7,7 @@
 	
 
     <!--  define the log home directory -->
-    <property name="LOG_HOME" value="e://logs"/>
+    <property name="LOG_HOME" value="/tmp/"/>
 
     <!-- 
     <springProperty scope="context" name="LOG_HOME" source="logback.path"/>
