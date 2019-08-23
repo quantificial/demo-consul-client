@@ -1,0 +1,25 @@
+
+server:
+  port: 8083
+spring:
+  application:
+    name: demo-consul-client
+  cloud:
+    consul:
+      discovery:
+        register: false
+        serviceName: demo-consul-client
+      host: localhost
+      port: 8500
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /monitor
+      exposure:
+        include: '*'
